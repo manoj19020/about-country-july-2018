@@ -1,0 +1,60 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/label_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Anadj ah aslfjas fsafjasjdfj asdjfuaspdfu asjd;jfj asdfjioua fiuf  fhasdhfi fashdf"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlue"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/label_header"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/label_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_weight="2.8"
+                android:text="Anadj ah aslfjas fsafjasjdfj asdjfuaspdfu asjd;jfj asdfjioua f fhasdhfi fashdf"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/image_desc"
+                android:layout_width="0dp"
+                android:layout_height="65dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="2.1" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_next"
+            android:layout_width="10dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_forward_black" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
