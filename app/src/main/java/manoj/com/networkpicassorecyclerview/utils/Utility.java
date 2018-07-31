@@ -37,7 +37,7 @@ public class Utility {
         // 3. Get the AlertDialog from create()
         AlertDialog dialog = builder.create();
         dialog.show();
-        TextView textView = dialog.findViewById(android.R.id.message);
+        TextView textView = (TextView) dialog.findViewById(android.R.id.message);
         textView.setTextSize(14);
     }
 }

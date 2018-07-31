@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mSwipeRefreshLayout = findViewById(R.id.swipeToRefresh);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView toolbar = findViewById(R.id.title);
+        TextView toolbar = (TextView) findViewById(R.id.title);
         if (aboutCountryResponse != null && aboutCountryResponse.getTitle() != null)
             toolbar.setText(aboutCountryResponse.getTitle());
         if (aboutCountryResponse != null && aboutCountryResponse.getRows() != null && aboutCountryResponse.getRows().size() > 0) {

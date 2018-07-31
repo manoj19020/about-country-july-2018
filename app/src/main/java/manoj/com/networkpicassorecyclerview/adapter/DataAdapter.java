@@ -58,9 +58,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         public ViewHolder(View view) {
             super(view);
 
-            tv_header = view.findViewById(R.id.label_header);
-            tv_desc = view.findViewById(R.id.label_description);
-            img_item = view.findViewById(R.id.image_desc);
+            tv_header = (TextView) view.findViewById(R.id.label_header);
+            tv_desc = (TextView) view.findViewById(R.id.label_description);
+            img_item = (ImageView) view.findViewById(R.id.image_desc);
         }
     }
 }
