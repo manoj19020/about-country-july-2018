@@ -19,12 +19,17 @@ import manoj.com.networkpicassorecyclerview.model.RowsItem;
 /**
  * Created by Manoj.Kumar04 on 7/27/2018.
  */
-
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private AboutCountryResponse countryResponses;
     private Context context;
     private List<RowsItem> rowsItems;
 
+    /**
+     * Instantiates a new Data adapter.
+     *
+     * @param context         the context
+     * @param countryResponse the country response
+     */
     public DataAdapter(Context context, AboutCountryResponse countryResponse) {
         this.context = context;
         this.countryResponses = countryResponse;
@@ -50,11 +55,28 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         return rowsItems.size();
     }
 
+    /**
+     * The type View holder.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * The Tv header.
+         */
         TextView tv_header;
+        /**
+         * The Tv desc.
+         */
         TextView tv_desc;
+        /**
+         * The Img item.
+         */
         ImageView img_item;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param view the view
+         */
         public ViewHolder(View view) {
             super(view);
 
