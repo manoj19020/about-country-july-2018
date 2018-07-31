@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
                         aboutCountryResponse.setTitle(response.body().getTitle());
                         initViews();
                     }
+                }else{
+                    Utility.validationDialog(MainActivity.this, getResources().getString(R.string.error), getResources().getString(R.string.error_desc));
                 }
             }
 
