@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         initViews();
     }
 
+//    request for the country details list
     private void requestAboutCountry() {
-//        appController = AppController.create(this);
         retrofitInterface = AppController.getRetrofitClient();
 
         retrofitInterface.getJSON().enqueue(new Callback<AboutCountryResponse>() {
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+//    initialize the view
     private void initViews() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
