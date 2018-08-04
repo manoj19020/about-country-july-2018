@@ -2,55 +2,51 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="5dp">
+    android:layout_margin="@dimen/margin_all_side">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="@dimen/margin">
 
         <TextView
             android:id="@+id/label_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Anadj ah aslfjas fsafjasjdfj asdjfuaspdfu asjd;jfj asdfjioua fiuf  fhasdhfi fashdf"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorBlue"/>
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/title_row_item_text_size"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/label_header"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/margin"
             android:orientation="horizontal"
             android:weightSum="5">
 
             <TextView
                 android:id="@+id/label_description"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/margin_0"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_weight="2.8"
-                android:text="Anadj ah aslfjas fsafjasjdfj asdjfuaspdfu asjd;jfj asdfjioua f fhasdhfi fashdf"
-                android:textSize="14sp" />
+                android:layout_weight="3"
+                android:textSize="@dimen/desc_row_item_text_size" />
 
             <ImageView
                 android:id="@+id/image_desc"
-                android:layout_width="0dp"
-                android:layout_height="65dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="2.1" />
+                android:layout_width="@dimen/margin_0"
+                android:layout_height="@dimen/cardview_image_height"
+                android:layout_marginLeft="@dimen/margin"
+                android:layout_weight="1.8" />
 
 
         </LinearLayout>
 
         <ImageView
             android:id="@+id/image_next"
-            android:layout_width="10dp"
-            android:layout_height="12dp"
+            android:layout_width="@dimen/margin"
+            android:layout_height="@dimen/height"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"

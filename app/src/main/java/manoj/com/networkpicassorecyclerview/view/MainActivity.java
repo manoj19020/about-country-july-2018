@@ -5,14 +5,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import manoj.com.networkpicassorecyclerview.AppController;
-import manoj.com.networkpicassorecyclerview.model.AboutCountryResponse;
-import manoj.com.networkpicassorecyclerview.adapter.DataAdapter;
 import manoj.com.networkpicassorecyclerview.R;
+import manoj.com.networkpicassorecyclerview.adapter.DataAdapter;
+import manoj.com.networkpicassorecyclerview.model.AboutCountryResponse;
 import manoj.com.networkpicassorecyclerview.network.RetrofitInterface;
-import manoj.com.networkpicassorecyclerview.utils.Utility;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,46 +26,28 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private RetrofitInterface retrofitInterface;
-    private AppController appController;
-    private AboutCountryResponse aboutCountryResponse = new AboutCountryResponse();
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private AboutCountryResponse aboutCountryResponse;
+    private Unbinder unbinder;
+    @BindView(R.id.swipeToRefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.error)
+    TextView mError;
+    @BindView(R.id.title)
+    TextView toolbar;
+    @BindView(R.id.card_recycler_view)
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        requestAboutCountry();
+        unbinder = ButterKnife.bind(this);
         initViews();
+        requestAboutCountry();
     }
 
-//    request for the country details list
-    private void requestAboutCountry() {
-        retrofitInterface = AppController.getRetrofitClient();
-
-        retrofitInterface.getJSON().enqueue(new Callback<AboutCountryResponse>() {
-            @Override
-            public void onResponse(Call<AboutCountryResponse> call, Response<AboutCountryResponse> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        aboutCountryResponse.setRows(response.body().getRows());
-                        aboutCountryResponse.setTitle(response.body().getTitle());
-                        initViews();
-                    }
-                }else{
-                    Utility.validationDialog(MainActivity.this, getResources().getString(R.string.error), getResources().getString(R.string.error_desc));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AboutCountryResponse> call, Throwable t) {
-                Utility.validationDialog(MainActivity.this, getResources().getString(R.string.error), getResources().getString(R.string.error_desc));
-            }
-        });
-    }
-
-//    initialize the view
+    //initialize views
     private void initViews() {
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -71,19 +56,70 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TextView toolbar = (TextView) findViewById(R.id.title);
+    }
+
+    //    request for the country details list
+    private void requestAboutCountry() {
+        retrofitInterface = AppController.getRetrofitClient();
+
+        retrofitInterface.getJSON().enqueue(new Callback<AboutCountryResponse>() {
+            @Override
+            public void onResponse(Call<AboutCountryResponse> call, Response<AboutCountryResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        mError.setVisibility(View.GONE);
+                        aboutCountryResponse = new AboutCountryResponse();
+                        aboutCountryResponse.setRows(response.body().getRows());
+                        aboutCountryResponse.setTitle(response.body().getTitle());
+                        setData();
+                    }
+                } else {
+//                    Utility.validationDialog(MainActivity.this, getResources().getString(R.string.error), getResources().getString(R.string.error_desc));
+                    setErrorVisibility();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AboutCountryResponse> call, Throwable t) {
+                setErrorVisibility();
+            }
+        });
+    }
+
+    private void setErrorVisibility() {
+        if (aboutCountryResponse == null) {
+            mError.setVisibility(View.VISIBLE);
+        } else {
+            mError.setVisibility(View.GONE);
+        }
+    }
+
+
+    //    initialize the view
+    private void setData() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestAboutCountry();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         if (aboutCountryResponse != null && aboutCountryResponse.getTitle() != null)
             toolbar.setText(aboutCountryResponse.getTitle());
         if (aboutCountryResponse != null && aboutCountryResponse.getRows() != null && aboutCountryResponse.getRows().size() > 0) {
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.card_recycler_view);
-            recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
 
-//        ArrayList androidVersions = prepareData();
             DataAdapter adapter = new DataAdapter(MainActivity.this, aboutCountryResponse);
             recyclerView.setAdapter(adapter);
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
 }
