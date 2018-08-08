@@ -12,7 +12,7 @@ import manoj.com.networkpicassorecyclerview.utils.Constants;
  */
 public class AppController extends Application {
     private AppController appController;
-    private static RetrofitInterface retrofitInterface;
+    private RetrofitInterface retrofitInterface;
 
     private static AppController getAppController(Context context) {
         return (AppController) context.getApplicationContext();
@@ -33,7 +33,7 @@ public class AppController extends Application {
      *
      * @return the retrofit client
      */
-    public static RetrofitInterface getRetrofitClient() {
+    public RetrofitInterface getRetrofitClient() {
         if (retrofitInterface == null) {
             retrofitInterface = RetrofitClient.getClient(Constants.BASE_URL);
         }

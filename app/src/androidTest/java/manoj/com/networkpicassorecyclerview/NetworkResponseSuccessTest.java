@@ -9,12 +9,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import manoj.com.networkpicassorecyclerview.model.AboutCountryResponse;
+import manoj.com.networkpicassorecyclerview.network.RetrofitClient;
 import manoj.com.networkpicassorecyclerview.network.RetrofitInterface;
+import manoj.com.networkpicassorecyclerview.utils.Constants;
 import manoj.com.networkpicassorecyclerview.view.MainActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertEquals;
 
 /**
@@ -30,14 +33,12 @@ public class NetworkResponseSuccessTest {
 
     @Before
     public void setUp() throws Exception {
-//        super.setUp();
-//        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+        //setup
     }
-
 
     @Test
     public void testNetworkCall() throws Exception {
-        retrofitInterface = AppController.getRetrofitClient();
+        retrofitInterface = RetrofitClient.getClient(Constants.BASE_URL);
 
         retrofitInterface.getJSON().enqueue(new Callback<AboutCountryResponse>() {
             @Override
@@ -52,6 +53,7 @@ public class NetworkResponseSuccessTest {
 
             @Override
             public void onFailure(Call<AboutCountryResponse> call, Throwable t) {
+                assertNull(t);
             }
         });
     }

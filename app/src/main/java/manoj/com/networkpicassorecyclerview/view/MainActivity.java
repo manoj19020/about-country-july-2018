@@ -7,6 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,6 +19,7 @@ import manoj.com.networkpicassorecyclerview.AppController;
 import manoj.com.networkpicassorecyclerview.R;
 import manoj.com.networkpicassorecyclerview.adapter.DataAdapter;
 import manoj.com.networkpicassorecyclerview.model.AboutCountryResponse;
+import manoj.com.networkpicassorecyclerview.model.RowsItem;
 import manoj.com.networkpicassorecyclerview.network.RetrofitInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private RetrofitInterface retrofitInterface;
     private AboutCountryResponse aboutCountryResponse;
     private Unbinder unbinder;
+    private AppController appController;
     @BindView(R.id.swipeToRefresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.error)
@@ -42,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
+        appController = AppController.create(this);
         initViews();
         requestAboutCountry();
     }
@@ -60,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     //    request for the country details list
     private void requestAboutCountry() {
-        retrofitInterface = AppController.getRetrofitClient();
-
+        retrofitInterface = appController.getRetrofitClient();
         retrofitInterface.getJSON().enqueue(new Callback<AboutCountryResponse>() {
             @Override
             public void onResponse(Call<AboutCountryResponse> call, Response<AboutCountryResponse> response) {
@@ -74,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         setData();
                     }
                 } else {
-//                    Utility.validationDialog(MainActivity.this, getResources().getString(R.string.error), getResources().getString(R.string.error_desc));
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.error_desc), Toast.LENGTH_SHORT).show();
                     setErrorVisibility();
                 }
 
@@ -82,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AboutCountryResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.error_desc), Toast.LENGTH_SHORT).show();
                 setErrorVisibility();
             }
         });
@@ -109,6 +116,14 @@ public class MainActivity extends AppCompatActivity {
         if (aboutCountryResponse != null && aboutCountryResponse.getTitle() != null)
             toolbar.setText(aboutCountryResponse.getTitle());
         if (aboutCountryResponse != null && aboutCountryResponse.getRows() != null && aboutCountryResponse.getRows().size() > 0) {
+            List<RowsItem> list = new ArrayList();
+            for (RowsItem item : aboutCountryResponse.getRows()) {
+                if (item.getTitle() != null || item.getDescription() != null || item.getImageHref() != null) {
+                    list.add(item);
+                }
+            }
+            aboutCountryResponse.setRows(list);
+
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
 
