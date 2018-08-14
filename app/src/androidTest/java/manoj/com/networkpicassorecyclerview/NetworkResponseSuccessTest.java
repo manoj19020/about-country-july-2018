@@ -8,6 +8,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+
 import manoj.com.networkpicassorecyclerview.model.AboutCountryResponse;
 import manoj.com.networkpicassorecyclerview.network.RetrofitClient;
 import manoj.com.networkpicassorecyclerview.network.RetrofitInterface;
@@ -18,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
 /**
@@ -45,15 +48,19 @@ public class NetworkResponseSuccessTest {
             public void onResponse(Call<AboutCountryResponse> call, Response<AboutCountryResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        assertEquals("200", response.code());
+                        assertEquals("Response is successful!", "200", response.code());
                     }
                 } else {
+                    assertTrue("Error in Response", response.code() > 200);
                 }
             }
 
             @Override
             public void onFailure(Call<AboutCountryResponse> call, Throwable t) {
-                assertNull(t);
+                if (t instanceof IOException) {
+                    if (t != null)
+                        assertNull("Internet not available", t==null);
+                }
             }
         });
     }

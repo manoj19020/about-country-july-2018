@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,12 +84,15 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, getResources().getString(R.string.error_desc), Toast.LENGTH_SHORT).show();
                     setErrorVisibility();
                 }
-
             }
 
             @Override
             public void onFailure(Call<AboutCountryResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this, getResources().getString(R.string.error_desc), Toast.LENGTH_SHORT).show();
+                if (t instanceof IOException) {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.network_error_desc), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.internal_error_desc), Toast.LENGTH_SHORT).show();
+                }
                 setErrorVisibility();
             }
         });
